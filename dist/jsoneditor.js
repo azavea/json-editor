@@ -1868,7 +1868,7 @@ JSONEditor.defaults.editors.string = JSONEditor.AbstractEditor.extend({
   },
   build: function() {
     var self = this, i;
-    if(!this.options.compact) this.header = this.label = this.theme.getFormInputLabel(this.getTitle());
+    if(!this.options.compact) this.header = this.label = this.theme.getFormInputLabel(this.getTitle(),this.isRequired());
     if(this.schema.description) this.description = this.theme.getFormInputDescription(this.schema.description);
 
     this.format = this.schema.format;
@@ -3223,7 +3223,7 @@ JSONEditor.defaults.editors.array = JSONEditor.AbstractEditor.extend({
     if(!this.options.compact) {
       this.header = document.createElement('span');
       this.header.textContent = this.getTitle();
-      this.title = this.theme.getHeader(this.header);
+      this.title = this.theme.getHeader(this.header,this.isRequired());
       this.container.appendChild(this.title);
       this.title_controls = this.theme.getHeaderButtonHolder();
       this.title.appendChild(this.title_controls);
@@ -3893,7 +3893,7 @@ JSONEditor.defaults.editors.table = JSONEditor.defaults.editors.array.extend({
     this.width = tmp.getNumColumns() + 2;
     
     if(!this.options.compact) {
-      this.title = this.theme.getHeader(this.getTitle());
+      this.title = this.theme.getHeader(this.getTitle(),this.isRequired());
       this.container.appendChild(this.title);
       this.title_controls = this.theme.getHeaderButtonHolder();
       this.title.appendChild(this.title_controls);
@@ -4472,7 +4472,7 @@ JSONEditor.defaults.editors.multiple = JSONEditor.AbstractEditor.extend({
     var self = this;
     var container = this.container;
 
-    this.header = this.label = this.theme.getFormInputLabel(this.getTitle());
+    this.header = this.label = this.theme.getFormInputLabel(this.getTitle(),this.isRequired());
     this.container.appendChild(this.header);
 
     this.switcher = this.theme.getSwitcher(this.display_text);
@@ -4597,7 +4597,7 @@ JSONEditor.defaults.editors["enum"] = JSONEditor.AbstractEditor.extend({
   },
   build: function() {
     var container = this.container;
-    this.title = this.header = this.label = this.theme.getFormInputLabel(this.getTitle());
+    this.title = this.header = this.label = this.theme.getFormInputLabel(this.getTitle(),this.isRequired());
     this.container.appendChild(this.title);
 
     this.options.enum_titles = this.options.enum_titles || [];
@@ -4874,7 +4874,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
   },
   build: function() {
     var self = this;
-    if(!this.options.compact) this.header = this.label = this.theme.getFormInputLabel(this.getTitle());
+    if(!this.options.compact) this.header = this.label = this.theme.getFormInputLabel(this.getTitle(),this.isRequired());
     if(this.schema.description) this.description = this.theme.getFormInputDescription(this.schema.description);
 
     if(this.options.compact) this.container.className += ' compact';
@@ -5442,7 +5442,7 @@ JSONEditor.defaults.editors.multiselect = JSONEditor.AbstractEditor.extend({
   },
   build: function() {
     var self = this, i;
-    if(!this.options.compact) this.header = this.label = this.theme.getFormInputLabel(this.getTitle());
+    if(!this.options.compact) this.header = this.label = this.theme.getFormInputLabel(this.getTitle(),this.isRequired());
     if(this.schema.description) this.description = this.theme.getFormInputDescription(this.schema.description);
 
     if((!this.schema.format && this.option_keys.length < 8) || this.schema.format === "checkbox") {
@@ -5625,7 +5625,7 @@ JSONEditor.defaults.editors.base64 = JSONEditor.AbstractEditor.extend({
   },
   build: function() {    
     var self = this;
-    this.title = this.header = this.label = this.theme.getFormInputLabel(this.getTitle());
+    this.title = this.header = this.label = this.theme.getFormInputLabel(this.getTitle(),this.isRequired());
 
     // Input that holds the base64 string
     this.input = this.theme.getFormInputField('hidden');
@@ -5719,7 +5719,7 @@ JSONEditor.defaults.editors.upload = JSONEditor.AbstractEditor.extend({
   },
   build: function() {    
     var self = this;
-    this.title = this.header = this.label = this.theme.getFormInputLabel(this.getTitle());
+    this.title = this.header = this.label = this.theme.getFormInputLabel(this.getTitle(),this.isRequired());
 
     // Input that holds the base64 string
     this.input = this.theme.getFormInputField('hidden');
@@ -6066,17 +6066,18 @@ JSONEditor.AbstractTheme = Class.extend({
   enableLabel: function(label) {
     label.className = '';
   },
-  getFormInputLabel: function(text) {
+  getFormInputLabel: function(text, required) {
     var el = document.createElement('label');
+    if (required) el.className += 'required';
     el.appendChild(document.createTextNode(text));
     return el;
   },
   getCheckboxLabel: function(text) {
     var el = this.getFormInputLabel(text);
-    el.className = 'jse-CheckboxLabel';
+    el.style.fontWeight = 'normal';
     return el;
   },
-  getHeader: function(text) {
+  getHeader: function(text, required) {
     var el = document.createElement('h3');
     if(typeof text === "string") {
       el.textContent = text;
@@ -6085,6 +6086,8 @@ JSONEditor.AbstractTheme = Class.extend({
       el.appendChild(text);
     }
 
+    if(required)el.className += " required";
+    
     return el;
   },
   getCheckbox: function() {
@@ -6335,10 +6338,11 @@ JSONEditor.defaults.themes.bootstrap2 = JSONEditor.AbstractTheme.extend({
     el.className = 'row-fluid';
     return el;
   },
-  getFormInputLabel: function(text) {
+  getFormInputLabel: function(text, required) {
     var el = this._super(text);
     el.style.display = 'inline-block';
     el.style.fontWeight = 'bold';
+    if(required)el.className += " required";
     return el;
   },
   setGridColumnSize: function(el,size) {
@@ -6697,9 +6701,10 @@ JSONEditor.defaults.themes.foundation = JSONEditor.AbstractTheme.extend({
     }
     input.group = this.closest(input,'.form-control');
   },
-  getFormInputLabel: function(text) {
+  getFormInputLabel: function(text, required) {
     var el = this._super(text);
     el.style.display = 'inline-block';
+    if(required)el.className += " required";
     return el;
   },
   getFormInputField: function(type) {
@@ -6784,9 +6789,10 @@ JSONEditor.defaults.themes.foundation3 = JSONEditor.defaults.themes.foundation.e
     el.style.fontSize = '.6em';
     return el;
   },
-  getFormInputLabel: function(text) {
+  getFormInputLabel: function(text, required) {
     var el = this._super(text);
     el.style.fontWeight = 'bold';
+    if(required)el.className += " required";
     return el;
   },
   getTabHolder: function() {
@@ -6842,9 +6848,10 @@ JSONEditor.defaults.themes.foundation4 = JSONEditor.defaults.themes.foundation.e
     el.style.fontSize = '.8rem';
     return el;
   },
-  getFormInputLabel: function(text) {
+  getFormInputLabel: function(text, required) {
     var el = this._super(text);
     el.style.fontWeight = 'bold';
+    if(required)el.className += " required";
     return el;
   }
 });
@@ -6898,11 +6905,12 @@ JSONEditor.defaults.themes.foundation5 = JSONEditor.defaults.themes.foundation.e
 });
 
 JSONEditor.defaults.themes.html = JSONEditor.AbstractTheme.extend({
-  getFormInputLabel: function(text) {
+  getFormInputLabel: function(text, required) {
     var el = this._super(text);
     el.style.display = 'block';
     el.style.marginBottom = '3px';
     el.style.fontWeight = 'bold';
+    if(required)el.className += " required";
     return el;
   },
   getFormInputDescription: function(text) {
@@ -7036,10 +7044,11 @@ JSONEditor.defaults.themes.jqueryui = JSONEditor.AbstractTheme.extend({
     el.style.fontSize = '.7em';
     return el;
   },
-  getFormInputLabel: function(text) {
+  getFormInputLabel: function(text, required) {
     var el = document.createElement('label');
     el.style.fontWeight = 'bold';
     el.style.display = 'block';
+    if(required)el.className += " required";
     el.textContent = text;
     return el;
   },
