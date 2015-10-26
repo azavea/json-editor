@@ -6038,7 +6038,7 @@ JSONEditor.AbstractTheme = Class.extend({
   },
   getGridRow: function() {
     var el = document.createElement('div');
-    el.className = 'jse-row';
+    el.className = 'row';
     return el;
   },
   getGridColumn: function() {
