@@ -24,9 +24,13 @@
 }
 .jse-Switcher{
     background-color:transparent;
+    display: inline-block;
     height:auto;
+    width:auto;
     font-style:italic;
     font-weight:normal;
+    margin-bottom: 0;
+    margin-left: 5px;
     padding:0 0 0 3px;
 }
 .jse-TextareaInput{
