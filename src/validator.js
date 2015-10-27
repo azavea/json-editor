@@ -58,6 +58,12 @@ JSONEditor.Validator = Class.extend({
       for(i=0; i<schema["enum"].length; i++) {
         if(stringified === JSON.stringify(schema["enum"][i])) valid = true;
       }
+
+      // allow empty values for non-required enum
+      if (!valid && !schema.required && !stringified) {
+        valid = true;
+      }
+
       if(!valid) {
         errors.push({
           path: path,

@@ -72,7 +72,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
       if(!this.isRequired()){
         self.enum_display.unshift(' ');
         self.enum_options.unshift('undefined');
-        self.enum_values.unshift('');
+        self.enum_values.unshift(undefined);
       }
 
     }
@@ -85,7 +85,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
       if(!this.isRequired()){
         self.enum_display.unshift(' ');
         self.enum_options.unshift('undefined');
-        self.enum_values.unshift('');
+        self.enum_values.unshift(undefined);
       }
 
     }
@@ -315,7 +315,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
         this.input.value = prev_value;
         this.value = prev_value;
       } else if (!this.isRequired()) {
-        this.value = ''; // default to blank for non-required fields
+        this.value = undefined; // default to blank for non-required fields
         this.input.value = 'undefined';
       }
       // Otherwise, set the value to the first select option
