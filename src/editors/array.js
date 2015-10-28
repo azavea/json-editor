@@ -437,7 +437,9 @@ JSONEditor.defaults.editors.array = JSONEditor.AbstractEditor.extend({
     var i = this.rows.length;
     
     self.rows[i] = this.getElementEditor(i);
-    self.row_cache[i] = self.rows[i];
+
+    // disable row cache so optional fields do not disappear when cached row reconstituted
+    //self.row_cache[i] = self.rows[i];
 
     if(self.tabs_holder) {
       self.rows[i].tab_text = document.createElement('span');
