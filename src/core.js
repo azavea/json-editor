@@ -322,7 +322,9 @@ JSONEditor.prototype = {
     path = path || '#/definitions/';
     if(schema.definitions) {
       for(var i in schema.definitions) {
-        if(!schema.definitions.hasOwnProperty(i)) continue;
+        if(!schema.definitions.hasOwnProperty(i)) {
+          continue;
+        }
         this.refs[path+i] = schema.definitions[i];
         if(schema.definitions[i].definitions) {
           this._getDefinitions(schema.definitions[i],path+i+'/definitions/');

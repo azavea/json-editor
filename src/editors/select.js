@@ -5,7 +5,12 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
     // Sanitize value before setting it
     var sanitized = value;
     if(this.enum_values.indexOf(sanitized) < 0) {
-      sanitized = this.enum_values[0];
+      // DISABLE DYNAMIC SELECTOR INPUT CHECK
+      // Or else it will attempt to check for related values before they exist
+      ////////////////////////////////////////////////////////////////////////////
+      if (!this.schema.enumSource) {
+        sanitized = this.enum_values[0];
+      }
     }
 
     if(this.value === sanitized) {
@@ -319,11 +324,12 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
       if(select_options.indexOf(prev_value) !== -1) {
         this.input.value = prev_value;
         this.value = prev_value;
-      } else if (!this.isRequired()) {
-        this.value = undefined; // default to blank for non-required fields
-        this.input.value = 'undefined';
       }
+      // DISABLE DYNAMIC SELECTOR INPUT CHECK
+      // Or else it will attempt to check for related values before they exist
+      ////////////////////////////////////////////////////////////////////////////
       // Otherwise, set the value to the first select option
+      /*
       else {
         this.input.value = select_options[0];
         this.value = select_options[0] || "";
@@ -331,6 +337,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
         else this.jsoneditor.onChange();
         this.jsoneditor.notifyWatchers(this.path);
       }
+      */
 
       this.setupSelect2();
     }
