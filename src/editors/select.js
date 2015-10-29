@@ -181,7 +181,6 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
 
     var new_val;
 
-
     // Invalid option, use first option instead
     if(this.enum_options.indexOf(val) === -1) {
       new_val = this.enum_values[0];
