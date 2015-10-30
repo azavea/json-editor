@@ -338,8 +338,16 @@ JSONEditor.AbstractEditor = Class.extend({
   },
   getDefault: function() {
     if(this.schema["default"]) return this.schema["default"];
-    if(this.schema["enum"]) return this.schema["enum"][0];
-    
+
+    if (!this.isRequired() && (this.schema['enum'] || this.schema.enumSource)) {
+      // default to empty option for selects and dynamic selects that aren't required
+      return undefined;
+    }
+
+    if(this.schema["enum"]) {
+      return this.schema["enum"][0];
+    }
+
     var type = this.schema.type || this.schema.oneOf;
     if(type && Array.isArray(type)) type = type[0];
     if(type && typeof type === "object") type = type.type;

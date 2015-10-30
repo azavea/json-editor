@@ -76,7 +76,7 @@ JSONEditor.defaults.editors.array = JSONEditor.AbstractEditor.extend({
     if(!this.options.compact) {
       this.header = document.createElement('span');
       this.header.textContent = this.getTitle();
-      this.title = this.theme.getHeader(this.header);
+      this.title = this.theme.getHeader(this.header,this.isRequired());
       this.container.appendChild(this.title);
       this.title_controls = this.theme.getHeaderButtonHolder();
       this.title.appendChild(this.title_controls);
@@ -437,7 +437,9 @@ JSONEditor.defaults.editors.array = JSONEditor.AbstractEditor.extend({
     var i = this.rows.length;
     
     self.rows[i] = this.getElementEditor(i);
-    self.row_cache[i] = self.rows[i];
+
+    // disable row cache so optional fields do not disappear when cached row reconstituted
+    //self.row_cache[i] = self.rows[i];
 
     if(self.tabs_holder) {
       self.rows[i].tab_text = document.createElement('span');
