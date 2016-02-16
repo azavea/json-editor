@@ -365,7 +365,12 @@ JSONEditor.AbstractEditor = Class.extend({
     return null;
   },
   getTitle: function() {
-    return this.schema.title || this.key;
+      //Title collapsable form sections
+      if (this.hasOwnProperty("hide_add_button")){
+        return this.schema.plural_title || this.parent.schema.definitions[this.key].plural_title;
+      }
+      //Title all else
+      return this.schema.title || this.key;
   },
   enable: function() {
     this.disabled = false;
