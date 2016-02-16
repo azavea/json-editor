@@ -365,7 +365,10 @@ JSONEditor.AbstractEditor = Class.extend({
     return null;
   },
   getTitle: function() {
-    return this.schema.title || this.key;
+      if (this.hasOwnProperty(parent.schema.title)){
+        return this.parent.schema.plural_title || this.parent.schema.title;
+      }
+      return this.schema.plural_title || this.schema.title || this.key;
   },
   enable: function() {
     this.disabled = false;
