@@ -1716,8 +1716,11 @@ JSONEditor.AbstractEditor = Class.extend({
   },
   getTitle: function() {
       //Title collapsable form sections
-      if (this.hasOwnProperty("hide_add_button")){
-        return this.schema.plural_title || this.parent.schema.definitions[this.key].plural_title;
+      if (this.hasOwnProperty("hide_add_button")) {
+        if (this.parent !== undefined && !this.schema.title) {
+          return this.parent.schema.definitions[this.key].plural_title || this.parent.schema.definitions[this.key].title || this.key;
+        }
+        return this.schema.plural_title || this.schema.title || this.key;
       }
       //Title all else
       return this.schema.title || this.key;
