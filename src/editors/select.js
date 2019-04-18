@@ -234,6 +234,12 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
       vars = this.getWatchedFieldValues();
       var select_options = [];
       var select_titles = [];
+      var key = this.key;
+
+      // Helper function to use auto-incrementing titles for dynamic enums
+      var mkAutoIncrementingTitle = function (title, index) {
+          return key + ' ' + (index + 1);
+      };
 
       for(var i=0; i<this.enumSource.length; i++) {
         // Constant values
@@ -299,6 +305,11 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
 
             select_options = select_options.concat(item_values);
             select_titles = select_titles.concat(item_titles);
+
+            // Override to use auto-incrementing titles for dynamic enums
+            if (this.jsoneditor.options.use_auto_inc_titles) {
+              select_titles = select_titles.map(mkAutoIncrementingTitle);
+            }
           }
         }
       }

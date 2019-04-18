@@ -2,7 +2,7 @@
   "name": "json-editor",
   "title": "JSONEditor",
   "description": "JSON Schema based editor -- Azavea fork",
-  "version": "10.7.25",
+  "version": "10.7.26",
   "main": "dist/jsoneditor.js",
   "author": {
     "name": "Jeremy Dorn",
