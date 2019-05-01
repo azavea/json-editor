@@ -5056,9 +5056,26 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
       var select_titles = [];
       var key = this.key;
 
+      // Helper for obtaining the title of the watched item (for use in auto-incrementing titles)
+      var extractWatchedTitle = function () {
+          try {
+            // Note: traveling up through the parents is a hack, but is the only realistic
+            // way to go about this without some major re-architecting. There doesn't seem
+            // to be a more succint way to get at the actual schema from within this module.
+            return self.parent.parent.parent.schema.definitions[key].title;
+          } catch(e) {
+            // Just use the key if there was a problem extracting the title
+            window.console.log("Failed to get watched title: ", e);
+            return key;
+          }
+      };
+
+      // Store the extracted watchedTitle: used as the prefix for all auto-incrementing titles
+      var watchedTitle = extractWatchedTitle();
+
       // Helper function to use auto-incrementing titles for dynamic enums
       var mkAutoIncrementingTitle = function (title, index) {
-          return key + ' ' + (index + 1);
+          return watchedTitle + ' ' + (index + 1);
       };
 
       for(var i=0; i<this.enumSource.length; i++) {
