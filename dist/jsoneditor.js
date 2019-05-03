@@ -5054,7 +5054,7 @@ JSONEditor.defaults.editors.select = JSONEditor.AbstractEditor.extend({
       vars = this.getWatchedFieldValues();
       var select_options = [];
       var select_titles = [];
-      var key = this.key;
+      var key = self.watched.target.replace(/^(root\.)/, "");
 
       // Helper for obtaining the title of the watched item (for use in auto-incrementing titles)
       var extractWatchedTitle = function () {
